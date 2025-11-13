@@ -1,4 +1,6 @@
-using E_commerceMVC.Data;
+using E_commerce.DataAccess.Data;
+using E_commerce.DataAccess.Repository.IRepository;
+using E_commerce.DataAccess.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +10,8 @@ builder.Services.AddControllersWithViews();
 builder.WebHost.UseStaticWebAssets();
 builder.Services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 
 var app = builder.Build();
 

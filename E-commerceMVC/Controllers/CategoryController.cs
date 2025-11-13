@@ -1,30 +1,99 @@
-﻿using E_commerceMVC.Data;
-using E_commerceMVC.Models;
+﻿using E_commerce.DataAccess.Repository.IRepository;
+using E_commerce.Models.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace E_commerceMVC.Controllers
+public class CategoryController : Controller
 {
-    public class CategoryController : Controller
+    private readonly IUnitOfWork _unitOfWork;
+    public CategoryController(IUnitOfWork unitOfWork)
     {
-        private readonly DataContext _data;
+        _unitOfWork = unitOfWork;
+    }
+    public IActionResult Index()
+    {
+        List<Category> objCategoryList = _unitOfWork.Category.GetAll().ToList();
+        return View(objCategoryList);
+    }
 
-        public CategoryController(DataContext data)
+    public IActionResult Create()
+    {
+        return View();
+    }
+    [HttpPost]
+    public IActionResult Create(Category obj)
+    {
+        if (obj.Name == obj.DisplayOrder.ToString())
         {
-            _data = data;
+            ModelState.AddModelError("name", "The DisplayOrder cannot exactly match the Name.");
         }
-        public IActionResult Index()
+
+        if (ModelState.IsValid)
         {
-            List<Category> categories = _data.Categories.ToList();
-            return View(categories);
+            _unitOfWork.Category.Add(obj);
+            _unitOfWork.Save();
+            TempData["success"] = "Category created successfully";
+            return RedirectToAction("Index");
         }
-        public IActionResult Create()
+        return View();
+
+    }
+
+    public IActionResult Edit(int? id)
+    {
+        if (id == null || id == 0)
         {
-            return View();
+            return NotFound();
         }
-        //public async Task<IActionResult> GetCategoriesNonPaging()
-        //{
-        //    List<Category> categories = _data.Categories.ToList();
-        //    return View(categories);
-        //}
+        Category? categoryFromDb = _unitOfWork.Category.Get(u => u.Id == id);
+        //Category? categoryFromDb1 = _db.Categories.FirstOrDefault(u=>u.Id==id);
+        //Category? categoryFromDb2 = _db.Categories.Where(u=>u.Id==id).FirstOrDefault();
+
+        if (categoryFromDb == null)
+        {
+            return NotFound();
+        }
+        return View(categoryFromDb);
+    }
+    [HttpPost]
+    public IActionResult Edit(Category obj)
+    {
+        if (ModelState.IsValid)
+        {
+            _unitOfWork.Category.Update(obj);
+            _unitOfWork.Save();
+            TempData["success"] = "Category updated successfully";
+            return RedirectToAction("Index");
+        }
+        return View();
+
+    }
+
+    public IActionResult Delete(int? id)
+    {
+        if (id == null || id == 0)
+        {
+            return NotFound();
+        }
+        Category? categoryFromDb = _unitOfWork.Category.Get(u => u.Id == id);
+
+        if (categoryFromDb == null)
+        {
+            return NotFound();
+        }
+        return View(categoryFromDb);
+    }
+    [HttpPost, ActionName("Delete")]
+    public IActionResult DeletePOST(int? id)
+    {
+        Category? obj = _unitOfWork.Category.Get(u => u.Id == id);
+        if (obj == null)
+        {
+            return NotFound();
+        }
+        _unitOfWork.Category.Remove(obj);
+        _unitOfWork.Save();
+        TempData["success"] = "Category deleted successfully";
+        return RedirectToAction("Index");
     }
 }
+
