@@ -1,5 +1,6 @@
 ﻿using E_commerce.DataAccess.Repository.IRepository;
 using E_commerce.Models.Models;
+using E_commerce.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -23,21 +24,37 @@ public class ProductController : Controller
             Text = u.Name,
             Value = u.Id.ToString()
         });
-        ViewBag.CategoryList = CategoryList;
-        return View();
+        //ViewBag.CategoryList = CategoryList;
+
+        ProductVM productVM = new ProductVM()
+        {
+            Product = new Product(),
+            CategoryList = CategoryList
+
+        };
+        return View(productVM);
     }
     [HttpPost]
-    public IActionResult Create(Product obj)
+    public IActionResult Create(ProductVM productVM)
     {
 
         if (ModelState.IsValid)
         {
-            _unitOfWork.Product.Add(obj);
+            _unitOfWork.Product.Add(productVM.Product);
             _unitOfWork.Save();
             TempData["success"] = "Product created successfully";
             return RedirectToAction("Index");
         }
-        return View();
+        else
+        {
+            productVM.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.Name,
+                Value = u.Id.ToString()
+            });
+            return View(productVM);
+        }
+
     }
 
     public IActionResult Edit(int? id)
