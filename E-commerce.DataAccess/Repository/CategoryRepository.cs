@@ -12,17 +12,17 @@ namespace E_commerce.DataAccess.Repository
 { 
 public class CategoryRepository : Repository<Category>, ICategoryRepository
 {
-    private DataContext _db;
-    public CategoryRepository(DataContext db) : base(db)
+    private DataContext _data;
+    public CategoryRepository(DataContext data) : base(data)
     {
-        _db = db;
+        _data = data;
     }
 
 
 
     public void Update(Category obj)
     {
-        _db.Categories.Update(obj);
+        _data.Categories.Update(obj);
     }
 }
 }

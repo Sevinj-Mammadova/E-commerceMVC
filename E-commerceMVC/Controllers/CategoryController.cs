@@ -35,7 +35,6 @@ public class CategoryController : Controller
             return RedirectToAction("Index");
         }
         return View();
-
     }
 
     public IActionResult Edit(int? id)
