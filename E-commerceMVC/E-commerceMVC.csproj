@@ -20,6 +20,9 @@
   <ProjectReference Include="..\E-commerce.Models\E-commerce.Models.csproj" />
   <ProjectReference Include="..\E-commerce.Utility\E-commerce.Utility.csproj" />
 </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\images\product\" />
+  </ItemGroup>
 
 
 </Project>
