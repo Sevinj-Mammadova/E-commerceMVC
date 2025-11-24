@@ -64,7 +64,7 @@ public class ProductController : Controller
                 {
                     file.CopyTo(fileStream);
                 }
-                productVM.Product.ImageUrl = @"images\product" + fileName;
+                productVM.Product.ImageUrl = @"/images/product/" + fileName;
             }
             _unitOfWork.Product.Add(productVM.Product);
             _unitOfWork.Save();
