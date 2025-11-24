@@ -18,8 +18,6 @@ public class CategoryRepository : Repository<Category>, ICategoryRepository
         _data = data;
     }
 
-
-
     public void Update(Category obj)
     {
         _data.Categories.Update(obj);
