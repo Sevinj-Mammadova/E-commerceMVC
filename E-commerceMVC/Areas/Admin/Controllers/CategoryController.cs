@@ -2,6 +2,7 @@
 using E_commerce.Models.Models;
 using Microsoft.AspNetCore.Mvc;
 
+[Area("Admin")]
 public class CategoryController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
