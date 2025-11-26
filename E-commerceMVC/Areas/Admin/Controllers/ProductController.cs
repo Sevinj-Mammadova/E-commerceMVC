@@ -132,7 +132,7 @@ public class ProductController : Controller
 
 
     #region API CALLS
-    //[HttpGet]
+    [HttpGet]
     public IActionResult GetAll()
     {
         List<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
