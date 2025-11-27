@@ -20,16 +20,8 @@ public class ProductController : Controller
         List<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
         return View(objProductList);
     }
-
     public IActionResult Upsert(int? id)
     {
-        //IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
-        //{
-        //    Text = u.Name,
-        //    Value = u.Id.ToString()
-        //});
-        //ViewBag.CategoryList = CategoryList;
-
         ProductVM productVM = new ProductVM()
         {
             Product = new Product(),
@@ -61,7 +53,7 @@ public class ProductController : Controller
             {
                 string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                 string productPath = Path.Combine(wwwRootPath, @"images\product");
-                if (!string.IsNullOrEmpty(productVM.Product.ImageUrl))
+                if (!string.IsNullOrEmpty(productVM.Product?.ImageUrl))
                 {
                     string oldImagePath = Path.Combine(wwwRootPath, productVM.Product.ImageUrl.TrimStart('/'));
                     if (System.IO.File.Exists(oldImagePath))
@@ -77,7 +69,7 @@ public class ProductController : Controller
                 }
                 productVM.Product.ImageUrl = @"/images/product/" + fileName;
             }
-            if (productVM.Product.Id == 0)
+            if (productVM?.Product?.Id == 0)
             {
                 _unitOfWork.Product.Add(productVM.Product);
                 TempData["success"] = "Product created successfully";
@@ -102,33 +94,6 @@ public class ProductController : Controller
         }
 
     }
-    //public IActionResult Delete(int? id)
-    //{
-    //    if (id == null || id == 0)
-    //    {
-    //        return NotFound();
-    //    }
-    //    Product? ProductFromDb = _unitOfWork.Product.Get(u => u.Id == id);
-
-    //    if (ProductFromDb == null)
-    //    {
-    //        return NotFound();
-    //    }
-    //    return View(ProductFromDb);
-    //}
-    //[HttpPost, ActionName("Delete")]
-    //public IActionResult DeletePOST(int? id)
-    //{
-    //    Product? obj = _unitOfWork.Product.Get(u => u.Id == id);
-    //    if (obj == null)
-    //    {
-    //        return NotFound();
-    //    }
-    //    _unitOfWork.Product.Remove(obj);
-    //    _unitOfWork.Save();
-    //    TempData["success"] = "Product deleted successfully";
-    //    return RedirectToAction("Index");
-    //}
 
 
     #region API CALLS
