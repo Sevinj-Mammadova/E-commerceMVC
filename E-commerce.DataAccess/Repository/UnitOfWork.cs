@@ -1,5 +1,6 @@
 ﻿using E_commerce.DataAccess.Data;
 using E_commerce.DataAccess.Repository.IRepository;
+using E_commerce.Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace E_commerce.DataAccess.Repository
         public IProductRepository Product { get; private set; }
         public ICompanyRepository Company { get; private set; }
         public IShoppingCartRepository ShoppingCart { get; private set; }
+        public IApplicationUserRepository ApplicationUser { get; private set; }
 
         public UnitOfWork(DataContext db)
         {
@@ -23,6 +25,7 @@ namespace E_commerce.DataAccess.Repository
             Product = new ProductRepository(_db);
             Company = new CompanyRepository(_db);
             ShoppingCart = new ShoppingCartRepository(_db);
+            ApplicationUser = new ApplicationUserRepository(_db);
 
         }
 
