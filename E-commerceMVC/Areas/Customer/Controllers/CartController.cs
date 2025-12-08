@@ -71,6 +71,10 @@ namespace E_commerceMVC.Areas.Customer.Controllers
             _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
+        public IActionResult Summary()
+        {
+            return View();
+        }
         private double GetPriceBaesOnQuantity(ShoppingCart shoppingCart)
         {
             if (shoppingCart.Count <= 50)
