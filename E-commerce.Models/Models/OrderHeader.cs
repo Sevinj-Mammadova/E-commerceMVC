@@ -11,7 +11,6 @@ namespace E_commerce.Models.Models
 {
     public class OrderHeader
     {
-
         public int Id { get; set; }
         public string ApplicationUserId { get; set; }
         [ForeignKey("ApplicationUserId")]
