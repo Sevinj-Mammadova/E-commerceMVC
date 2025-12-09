@@ -37,7 +37,7 @@ namespace E_commerce.DataAccess.Repository
 
         }
 
-        public void UpdateStripePaymentId(int id, string sessionId, string paymentIntentId)
+        public void UpdateStripePaymentID(int id, string sessionId, string paymentIntentId)
         {
             var orderFromDb = _data.OrderHeaders.FirstOrDefault(x => x.Id == id);
             if (!string.IsNullOrEmpty(sessionId))
